@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env*.example
+
+# Logs and runtime files
+logs/
+**/logs/
+*.log
+*.pid
+*.seed
+*.pid.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build / cache
+dist/
+build/
+coverage/
+.cache/
+.eslintcache
+tmp/
+temp/
+.npm-cache/
+.npm/
+.parcel-cache/
+.next/
+out/
+
+# Optional Render local config
+.render/

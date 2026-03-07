@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Procurement</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/manager.css">
+  <link rel="stylesheet" href="css/professional-theme.css?v=20260360">
+</head>
+<body class="manager-dashboard premium-app">
+  <div class="main-content">
+    <section id="procurementSection" class="card">
+      <h2 class="section-title"><span class="icon">🚜</span><span>Record Procurement</span></h2>
+      <form id="procForm" class="form-modern">
+        <input type="hidden" id="procId">
+        <input id="itemName" placeholder="Item name" required>
+        <input id="unit" placeholder="Unit (kg, bags, crates)" required>
+        <input id="quantity" type="number" placeholder="Quantity" required>
+        <input id="category" placeholder="Category" required>
+        <input id="cost" type="number" placeholder="Cost (UGX)" required>
+        <input id="dealerName" placeholder="Dealer name" required>
+        <input id="branch" placeholder="Branch" required>
+        <button type="submit">Save Procurement</button>
+      </form>
+
+      <h2 class="section-title"><span class="icon">📋</span><span>Procurement Records</span></h2>
+      <div class="table-scroll">
+        <table id="procTable" class="table-modern">
+          <thead>
+            <tr>
+              <th>Item</th><th>Unit</th><th>Quantity</th><th>Category</th>
+              <th>Cost</th><th>Dealer</th><th>Branch</th><th>Date</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/confirm-modal.js?v=20260302"></script>
+  <script src="js/procurement.js?v=20260302"></script>
+</body>
+</html>
+
+
+

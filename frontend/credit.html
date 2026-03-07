@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credit Sales Records</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/sales.css">
+  <link rel="stylesheet" href="css/professional-theme.css?v=20260360">
+</head>
+<body class="premium-app">
+  <main class="content">
+    <!-- Back to Dashboard -->
+    <button onclick="window.location.href='sales.html'" class="back-btn">⬅️ Back to Dashboard</button>
+    <h2 class="section-title"><span class="icon">💳</span><span>Credit Sales Records</span></h2>
+
+    <!-- Add / Update Credit Sale Form -->
+    <div class="card">
+      <h3>Manage Credit Sale ✍️</h3>
+      <form id="creditForm" class="form-modern">
+        <input type="hidden" id="creditId" />
+
+        <input type="text" name="buyerName" placeholder="Name of buyer" required>
+        <input type="text" name="nin" placeholder="National Id (NIN)" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <input type="text" name="contact" placeholder="Contacts" required>
+        <input type="number" name="amountDue" placeholder="Amount due (UGX)" required>
+        <input type="text" name="agentName" placeholder="Sales agent name" required>
+        <input type="date" name="dueDate" required>
+        <input type="text" name="itemName" placeholder="Produce name" required>
+        <input type="text" name="type" placeholder="Type of produce" required>
+        <input type="number" name="tonnage" placeholder="Tonnage in KGs" required>
+        <input type="date" name="dispatchDate" title="Date of dispatch" required>
+
+        <!-- Branch dropdown -->
+        <select name="branch" required>
+          <option value="maganjo">Maganjo</option>
+          <option value="matugga">Matugga</option>
+        </select>
+
+        <!-- Buttons -->
+        <button type="button" id="saveBtn">Save</button>
+        <button type="button" id="updateBtn">Update</button>
+        <button type="button" id="deleteBtn">Delete</button>
+      </form>
+      <p id="creditMessage"></p>
+    </div>
+
+    <!-- Credit Sales Table -->
+    <div class="table-scroll">
+      <table id="creditTable" class="table-modern">
+        <thead>
+          <tr>
+            <th>Name of buyer</th>
+            <th>National Id (NIN)</th>
+            <th>Location</th>
+            <th>Contacts</th>
+            <th>Original Amount (UGX)</th>
+            <th>Amount paid (UGX)</th>
+            <th>Amount due (UGX)</th>
+            <th>Payment status</th>
+            <th>Sales agent name</th>
+            <th>Due Date</th>
+            <th>Produce name</th>
+            <th>Type of produce</th>
+            <th>Tonnage in KGs</th>
+            <th>Date of dispatch</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Link to JS -->
+  <script src="js/confirm-modal.js?v=20260302"></script>
+  <script src="js/credit.js?v=20260302"></script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sales Agent Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/sales.css?v=20260307">
+  <link rel="stylesheet" href="css/professional-theme.css?v=20260360">
+</head>
+<body class="sales-dashboard premium-app">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>Sales Agent Dashboard</h2>
+      <ul>
+        <li><a href="#" id="navDashboard" data-icon="📊">Dashboard</a></li>
+        <li><a href="#" id="navSales" data-icon="🛒">Sales</a></li>
+        <li><a href="#" id="navCredit" data-icon="💳">Credit Sales</a></li>
+        <li><a href="#" id="logoutBtn" data-icon="🚪">Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <header class="page-hero card">
+        <h2 class="company-mark">
+          <span class="company-mark-main">
+            <span class="company-badge">KGL</span>
+            <span class="company-name">Karibu Groceries LTD</span>
+          </span>
+          <span class="hero-user-chip" id="salesUserChip">
+            <span class="user-icon">👤</span>
+            <span class="user-name">Sales Agent</span>
+          </span>
+        </h2>
+      </header>
+      <section id="dashboardSection">
+        <h2 class="overview-heading">📈 Overview</h2>
+        <div id="salesOverviewGrid" class="overview-grid"></div>
+        <div id="salesAnalytics" class="analytics-grid">
+          <article class="card chart-card">
+            <h3 class="chart-title">Sales Overview</h3>
+            <div class="chart-wrap">
+              <canvas id="salesSalesChart" data-chart="sales"></canvas>
+            </div>
+          </article>
+          <article class="card chart-card">
+            <h3 class="chart-title">Credit Overview</h3>
+            <div class="chart-wrap">
+              <canvas id="salesCreditChart" data-chart="credit"></canvas>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="salesSection" class="hidden">
+        <h2 class="section-title"><span class="icon">🛒</span><span>Add Sales</span></h2>
+        <div class="card">
+          <form id="salesForm" class="form-modern">
+            <div class="form-field">
+              <label for="saleProduceName">Name of produce</label>
+              <input id="saleProduceName" type="text" name="produceName" placeholder="Name of produce" required>
+            </div>
+            <div class="form-field">
+              <label for="saleTonnage">Tonnage in KGs</label>
+              <input id="saleTonnage" type="number" name="tonnage" placeholder="Tonnage in KGs" required>
+            </div>
+            <div class="form-field">
+              <label for="saleAmountPaid">Amount paid (UGX total for this sale)</label>
+              <input id="saleAmountPaid" type="number" name="amountPaid" placeholder="Amount paid (UGX total for this sale)" required>
+              <small id="saleUnitPriceHint" class="sale-price-note">Amount will auto-calculate when produce price and tonnage are available.</small>
+            </div>
+            <div class="form-field">
+              <label for="saleBuyerName">Buyer name</label>
+              <input id="saleBuyerName" type="text" name="buyerName" placeholder="Buyer name" required>
+            </div>
+            <div class="form-field">
+              <label for="saleSellerName">Sales agent name (Auto)</label>
+              <input id="saleSellerName" type="text" name="sellerName" placeholder="Sales agent name (Auto)" readonly>
+            </div>
+            <div class="form-field">
+              <label for="saleBranch">Branch name (Auto)</label>
+              <input id="saleBranch" type="text" name="branch" placeholder="Branch name (Auto)" readonly>
+            </div>
+            <div class="form-field">
+              <label for="saleDate">Date (Auto)</label>
+              <input id="saleDate" type="date" name="saleDate" placeholder="Date (Auto)" readonly>
+            </div>
+            <div class="form-field">
+              <label for="saleTime">Time (Auto)</label>
+              <input id="saleTime" type="text" name="saleTime" placeholder="Time (Auto)" readonly>
+            </div>
+            <button type="submit">Save Sale</button>
+          </form>
+          <p id="salesMessage"></p>
+        </div>
+
+        <div class="table-scroll">
+          <table id="salesTable" class="table-modern">
+            <thead>
+              <tr>
+                <th>Name of produce</th>
+                <th>Tonnage in KGs</th>
+                <th>Amount paid (UGX)</th>
+                <th>Buyer name</th>
+                <th>Sales agent name</th>
+                <th>Branch name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="creditSection" class="hidden">
+        <h2 class="section-title"><span class="icon">💳</span><span>Add Credit Sales</span></h2>
+        <div class="card">
+          <form id="creditForm" class="form-modern">
+            <div class="form-field">
+              <label for="creditBuyerName">Name of buyer</label>
+              <input id="creditBuyerName" type="text" name="buyerName" placeholder="Name of buyer" required>
+            </div>
+            <div class="form-field">
+              <label for="creditNin">National Id (NIN)</label>
+              <input id="creditNin" type="text" name="nin" placeholder="National Id (NIN)" required>
+            </div>
+            <div class="form-field">
+              <label for="creditLocation">Location</label>
+              <input id="creditLocation" type="text" name="location" placeholder="Location" required>
+            </div>
+            <div class="form-field">
+              <label for="creditContact">Contacts</label>
+              <input id="creditContact" type="text" name="contact" placeholder="Contacts" required>
+            </div>
+            <div class="form-field">
+              <label for="creditAmountDue">Amount due (UGX)</label>
+              <input id="creditAmountDue" type="number" name="amountDue" placeholder="Amount due (UGX)" required>
+              <small id="creditUnitPriceHint" class="sale-price-note">Amount due will auto-calculate when produce price and tonnage are available.</small>
+            </div>
+            <div class="form-field">
+              <label for="creditSellerName">Sales agent name (Auto)</label>
+              <input id="creditSellerName" type="text" name="sellerName" placeholder="Sales agent name (Auto)" readonly>
+            </div>
+            <div class="form-field">
+              <label for="creditDueDate">Due date</label>
+              <input id="creditDueDate" type="date" name="dueDate" required>
+            </div>
+            <div class="form-field">
+              <label for="creditProduceName">Produce name</label>
+              <input id="creditProduceName" type="text" name="produceName" placeholder="Produce name" required>
+            </div>
+            <div class="form-field">
+              <label for="creditProduceType">Type of produce</label>
+              <input id="creditProduceType" type="text" name="produceType" placeholder="Type of produce" required>
+            </div>
+            <div class="form-field">
+              <label for="creditTonnage">Tonnage in KGs</label>
+              <input id="creditTonnage" type="number" name="tonnage" placeholder="Tonnage in KGs" required>
+            </div>
+            <div class="form-field">
+              <label for="creditDispatchDate">Date of dispatch (Auto)</label>
+              <input id="creditDispatchDate" type="text" name="dispatchDate" placeholder="Date of dispatch (Auto)" readonly>
+            </div>
+            <div class="form-field">
+              <label for="creditBranch">Branch name (Auto)</label>
+              <input id="creditBranch" type="text" name="branch" placeholder="Branch name (Auto)" readonly>
+            </div>
+            <button type="submit">Save Credit Sale</button>
+          </form>
+          <p id="creditMessage"></p>
+        </div>
+
+        <div class="table-scroll">
+          <table id="creditTable" class="table-modern">
+            <thead>
+              <tr>
+                <th>Name of buyer</th>
+                <th>National Id (NIN)</th>
+                <th>Location</th>
+                <th>Contacts</th>
+                <th>Original Amount (UGX)</th>
+                <th>Amount paid (UGX)</th>
+                <th>Amount due (UGX)</th>
+                <th>Payment status</th>
+                <th>Sales agent name</th>
+                <th>Due Date</th>
+                <th>Produce name</th>
+                <th>Type of produce</th>
+                <th>Tonnage in KGs</th>
+                <th>Date of dispatch</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/dashboard-overview.js?v=20260310"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="js/dashboard-analytics.js?v=20260336"></script>
+  <script src="js/confirm-modal.js?v=20260302"></script>
+  <script>
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const userBranch = String(localStorage.getItem("branch") || "").trim().toLowerCase();
+    const userName = String(localStorage.getItem("userName") || "").trim();
+
+    function formatBranchLabel(value) {
+      if (value === "maganjo") return "Maganjo";
+      if (value === "matugga") return "Matugga";
+      return value ? value.charAt(0).toUpperCase() + value.slice(1) : "Branch";
+    }
+
+    function ensureToastContainer() {
+      let container = document.getElementById("toastContainer");
+      if (!container) {
+        container = document.createElement("div");
+        container.id = "toastContainer";
+        container.className = "toast-container";
+        document.body.appendChild(container);
+      }
+      return container;
+    }
+
+    function showToast(message, type = "info") {
+      const container = ensureToastContainer();
+      const toast = document.createElement("div");
+      toast.className = `toast show ${type}`;
+      toast.textContent = message;
+      container.prepend(toast);
+      setTimeout(() => toast.remove(), 2000);
+    }
+
+    function showLogoutToast(message, type = "success") {
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (!logoutBtn) {
+        showToast(message, type);
+        return;
+      }
+      let host = logoutBtn.nextElementSibling;
+      if (!host || !host.classList.contains("sidebar-toast-host")) {
+        host = document.createElement("div");
+        host.className = "sidebar-toast-host";
+        logoutBtn.insertAdjacentElement("afterend", host);
+      }
+      const toast = document.createElement("div");
+      toast.className = `toast show ${type}`;
+      toast.textContent = message;
+      host.prepend(toast);
+      setTimeout(() => {
+        toast.remove();
+        if (!host.children.length) host.remove();
+      }, 2200);
+    }
+
+    if (!token || role !== "SalesAgent") {
+      window.location.href = "login.html";
+    }
+
+    const salesChipName = document.querySelector("#salesUserChip .user-name");
+    if (salesChipName) salesChipName.textContent = userName || "Sales Agent";
+
+    document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      showLogoutToast("Logged out successfully.", "success");
+      sessionStorage.setItem("pendingToast", JSON.stringify({
+        message: "Logged out successfully.",
+        type: "success"
+      }));
+      localStorage.clear();
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 1000);
+    });
+
+    function showSection(id) {
+      document.querySelectorAll(".content section").forEach((sec) => sec.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+      document.querySelectorAll(".sidebar a").forEach((link) => {
+        link.classList.toggle("active", link.dataset.section === id);
+      });
+    }
+
+    async function showDashboard() {
+      const heading = document.querySelector("#dashboardSection .overview-heading");
+      if (heading) heading.textContent = `🏬 ${formatBranchLabel(userBranch)} Branch Overview`;
+      showSection("dashboardSection");
+      if (typeof loadDashboardOverview === "function") {
+        await loadDashboardOverview("salesOverviewGrid", {
+          forceHideStock: true,
+          hideCreditSalesCard: true,
+          tableTitle: "Sales Summary (My Branch)",
+          hideSummaryTable: true
+        });
+      }
+      if (typeof loadDashboardAnalytics === "function") {
+        await loadDashboardAnalytics("salesAnalytics", { forceBranchOnly: true, analyticsMode: "sales-credit" });
+      }
+    }
+
+    document.getElementById("navDashboard").dataset.section = "dashboardSection";
+    document.getElementById("navSales").dataset.section = "salesSection";
+    document.getElementById("navCredit").dataset.section = "creditSection";
+
+    document.getElementById("navDashboard").addEventListener("click", (e) => {
+      e.preventDefault();
+      showToast("Opening Dashboard", "info");
+      showDashboard();
+    });
+
+    document.getElementById("navSales").addEventListener("click", (e) => {
+      e.preventDefault();
+      showToast("Opening Add Sales", "info");
+      showSection("salesSection");
+      if (typeof loadSales === "function") loadSales();
+    });
+
+    document.getElementById("navCredit").addEventListener("click", (e) => {
+      e.preventDefault();
+      showToast("Opening Add credit Sales", "info");
+      showSection("creditSection");
+      if (typeof loadCreditSales === "function") loadCreditSales();
+    });
+
+    showDashboard();
+  </script>
+
+  <script src="js/sales.js?v=20260325"></script>
+  <script src="js/credit.js?v=20260310"></script>
+</body>
+</html>
+
+
+

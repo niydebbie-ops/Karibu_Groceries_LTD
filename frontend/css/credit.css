@@ -1,0 +1,167 @@
+/* ===========================
+   CREDIT SALES STYLES
+=========================== */
+body.credit-dashboard {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column; /* no sidebar */
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+}
+
+.main-content h1 {
+  font-size: 1.8em;
+  margin-bottom: 25px;
+  color: #1a2a40;
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  font-size: 1.4em;
+  color: #0066cc;
+}
+
+/* Forms */
+.form-modern {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.form-modern input,
+.form-modern select {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  font-size: 1em;
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.form-modern input:focus,
+.form-modern select:focus {
+  border-color: #0066cc;
+  outline: none;
+}
+
+.form-modern button {
+  flex: 1 100%;
+  padding: 14px;
+  background-color: #0066cc;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-modern button:hover {
+  background-color: #004c99;
+}
+
+/* Tables */
+.table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table-modern th,
+.table-modern td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.table-modern th {
+  background-color: lavender;
+  color: blue;
+  font-weight: 600;
+}
+
+.table-modern tr:hover td {
+  background-color: #f0f4f9;
+}
+
+/* Buttons */
+.updateBtn,
+.deleteBtn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.updateBtn {
+  background-color: #0066cc;
+  color: #fff;
+}
+
+.updateBtn:hover {
+  background-color: #004c99;
+}
+
+.deleteBtn {
+  background-color: #cc0000;
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  background-color: #990000;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  .form-modern {
+    flex-direction: column;
+  }
+
+  .form-modern input,
+  .form-modern select {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
+  .table-modern th,
+  .table-modern td {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}

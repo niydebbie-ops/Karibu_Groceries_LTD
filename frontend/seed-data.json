@@ -1,0 +1,103 @@
+{
+  "sales": [
+    {
+      "produceName": "Grain Maize",
+      "tonnageKgs": 1100,
+      "amountPaidUgx": 75000,
+      "buyerName": "Alice",
+      "salesAgentName": "Eddy",
+      "branchName": "Matugga",
+      "saleDate": "2026-01-29",
+      "saleTime": "14:00"
+    },
+    {
+      "produceName": "Beans",
+      "tonnageKgs": 1200,
+      "amountPaidUgx": 100000,
+      "buyerName": "John Doe",
+      "salesAgentName": "Jane Agent",
+      "branchName": "Maganjo",
+      "saleDate": "2026-01-30",
+      "saleTime": "15:30"
+    }
+  ],
+  "credit": [
+    {
+      "_id": "699ff5cf42c77e5738b7f9f2",
+      "buyerName": "Bob Smith",
+      "nationalId": "CF1234567",
+      "location": "Masaka",
+      "contact": "0701234567",
+      "originalAmountUgx": 200000,
+      "amountPaidUgx": 100000,
+      "amountDueUgx": 100000,
+      "paymentStatus": "Partial",
+      "lastPaymentDate": "2026-02-14T10:30:00.000Z",
+      "salesAgentName": "Jane Agent",
+      "dueDate": "2026-02-15",
+      "produceName": "Cow peas",
+      "produceType": "Legume",
+      "tonnageKgs": 1000,
+      "dispatchDate": "2026-01-30",
+      "branchName": "Maganjo",
+      "createdAt": "2026-01-30T08:00:00.000Z",
+      "__v": 0
+    }
+  ],
+  "procurement": [
+    {
+      "produceName": "Peas",
+      "produceType": "Legume",
+      "procurementDate": "2026-02-07",
+      "procurementTime": "1:01:42 AM",
+      "tonnageKgs": 3000,
+      "costUgx": 500000,
+      "dealerName": "Nancy",
+      "dealerContact": "0707038847",
+      "sellingPriceUgx": 11000,
+      "branchName": "Maganjo"
+    },
+    {
+      "produceName": "Maize",
+      "produceType": "Cereals",
+      "procurementDate": "2026-02-07",
+      "procurementTime": "1:11:55 AM",
+      "tonnageKgs": 100,
+      "costUgx": 1000000,
+      "dealerName": "Eddy",
+      "dealerContact": "0707038847",
+      "sellingPriceUgx": 15000,
+      "branchName": "Matugga"
+    },
+    {
+      "produceName": "Beans",
+      "produceType": "Legume",
+      "procurementDate": "2026-02-25",
+      "procurementTime": "6:41:33 PM",
+      "tonnageKgs": 5000,
+      "costUgx": 5000000,
+      "dealerName": "Dealer-MAGANJO-093259",
+      "dealerContact": "0707038847",
+      "sellingPriceUgx": 15000,
+      "branchName": "Maganjo"
+    }
+  ],
+  "stock": [
+    {
+      "produceName": "Maize",
+      "tonnageKgs": 200,
+      "unit": "kg",
+      "branchName": "Matugga",
+      "status": "OK",
+      "lastUpdated": "2026-02-09T19:44:54.965Z"
+    },
+    {
+      "produceName": "Beans",
+      "tonnageKgs": 1200,
+      "unit": "kg",
+      "branchName": "Maganjo",
+      "status": "OK",
+      "lastUpdated": "2026-02-25T06:31:34.680Z"
+    }
+  ]
+}
