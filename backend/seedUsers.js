@@ -37,11 +37,10 @@ async function seedUsers() {
   } catch (error) {
     console.error("Seed error:", error.message);
     process.exitCode = 1;
-  } finally {
-    await mongoose.connection.close();
-    console.log("Database connection closed.");
   }
 }
+   
+
 
 module.exports = seedUsers;
 
