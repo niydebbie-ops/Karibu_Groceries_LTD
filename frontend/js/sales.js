@@ -131,6 +131,47 @@ document.addEventListener("DOMContentLoaded", () => {
     return String(value || "");
   }
 
+  function formatDisplayDate(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return "-";
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
+  function formatDateForField(value) {
+    return formatDisplayDate(value);
+  }
+
+  function toIsoFromFieldDate(value) {
+    const raw = String(value || "").trim();
+    if (!raw) return "";
+
+    const dotted = raw.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (dotted) {
+      const day = Number(dotted[1]);
+      const month = Number(dotted[2]);
+      const year = Number(dotted[3]);
+      const date = new Date(year, month - 1, day);
+      if (
+        Number.isFinite(date.getTime()) &&
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+      ) {
+        return date.toISOString();
+      }
+      return "";
+    }
+
+    const isoLike = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (isoLike) return new Date(`${raw}T00:00:00`).toISOString();
+
+    const parsed = new Date(raw);
+    return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : "";
+  }
+
   function normalizePersonName(value) {
     return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
   }
@@ -266,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
     editingSaleId = "";
     if (salesForm.sellerName) salesForm.sellerName.value = userName;
     if (salesForm.branch) salesForm.branch.value = assignedBranch ? formatBranchName(assignedBranch) : "";
-    if (salesForm.saleDate) salesForm.saleDate.value = new Date().toISOString().slice(0, 10);
+    if (salesForm.saleDate) salesForm.saleDate.value = formatDateForField(new Date());
     if (salesForm.saleTime) salesForm.saleTime.value = new Date().toLocaleTimeString();
     if (amountPaidField) amountPaidField.readOnly = false;
     if (unitPriceHint) {
@@ -322,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${normalizedSale.buyerName}</td>
           <td>${normalizedSale.agentName}</td>
           <td>${formatBranchName(normalizedSale.branch)}</td>
-          <td>${new Date(normalizedSale.date).toLocaleDateString()}</td>
+          <td>${formatDisplayDate(normalizedSale.date)}</td>
           <td>${normalizedSale.time || "-"}</td>
           <td>${actionsHtml}</td>
         `;
@@ -353,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
       salesForm.buyerName.value = sale.buyerName;
       if (salesForm.sellerName) salesForm.sellerName.value = userName;
       if (salesForm.branch) salesForm.branch.value = formatBranchName(assignedBranch);
-      if (salesForm.saleDate) salesForm.saleDate.value = new Date(sale.date).toISOString().slice(0, 10);
+      if (salesForm.saleDate) salesForm.saleDate.value = formatDateForField(sale.date);
       if (salesForm.saleTime) salesForm.saleTime.value = sale.time || new Date().toLocaleTimeString();
       if (saveButton) saveButton.textContent = "Update Sale";
       await updateAmountPaidAuto();
@@ -401,9 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
       buyerName: String(salesForm.buyerName.value || "").trim(),
       sellerName: userName,
       branch: String(assignedBranch || "").trim().toLowerCase(),
-      date: salesForm.saleDate?.value
-        ? new Date(`${salesForm.saleDate.value}T00:00:00`).toISOString()
-        : new Date().toISOString(),
+      date: toIsoFromFieldDate(salesForm.saleDate?.value) || new Date().toISOString(),
       time: salesForm.saleTime?.value || new Date().toLocaleTimeString()
     };
 

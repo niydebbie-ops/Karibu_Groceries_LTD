@@ -29,8 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const costRateByProduce = new Map();
   const sellingRateByProduce = new Map();
   const pendingSellingPriceRequests = new Map();
-  let pendingDeleteId = "";
-  let pendingDeleteUntil = 0;
 
   if (!form || !tableBody) return;
 
@@ -59,24 +57,45 @@ document.addEventListener("DOMContentLoaded", () => {
     if (message) showToast(message, type);
   }
 
-  function requireDeleteConfirmation(id, label = "record") {
-    const now = Date.now();
-    if (pendingDeleteId === id && now < pendingDeleteUntil) {
-      pendingDeleteId = "";
-      pendingDeleteUntil = 0;
-      return true;
-    }
-    pendingDeleteId = id;
-    pendingDeleteUntil = now + 3500;
-    showToast(`Click Delete again within 3 seconds to confirm ${label} deletion.`, "info");
-    return false;
-  }
-
   function formatBranchName(value) {
     const branch = String(value || "").trim().toLowerCase();
     if (branch === "maganjo") return "Maganjo";
     if (branch === "matugga") return "Matugga";
     return String(value || "");
+  }
+
+  function formatDisplayDate(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return "-";
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
+  function toIsoFromFieldDate(value) {
+    const raw = String(value || "").trim();
+    if (!raw) return "";
+    const dotted = raw.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (dotted) {
+      const day = Number(dotted[1]);
+      const month = Number(dotted[2]);
+      const year = Number(dotted[3]);
+      const date = new Date(year, month - 1, day);
+      if (
+        Number.isFinite(date.getTime()) &&
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+      ) {
+        return date.toISOString();
+      }
+      return "";
+    }
+    const isoLike = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (isoLike) return new Date(`${raw}T00:00:00`).toISOString();
+    const parsed = new Date(raw);
+    return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : "";
   }
 
   function initProduceField() {
@@ -100,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setProcurementDateTime() {
     const now = new Date();
-    if (procDateField) procDateField.value = now.toISOString().slice(0, 10);
+    if (procDateField) procDateField.value = formatDisplayDate(now);
     if (procTimeField) procTimeField.value = now.toLocaleTimeString();
   }
 
@@ -307,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
         row.innerHTML = `
           <td>${produceName}</td>
           <td>${produceType}</td>
-          <td>${dateValue ? new Date(dateValue).toLocaleDateString() : "-"}</td>
+          <td>${formatDisplayDate(dateValue)}</td>
           <td>${timeValue}</td>
           <td>${tonnageValue}</td>
           <td>${p.costUgx}</td>
@@ -317,7 +336,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${formatBranchName(branchValue)}</td>
           <td>
             <button class="btn-update" data-id="${p._id}">Update</button>
-            <button class="btn-delete" data-id="${p._id}">Delete</button>
           </td>
         `;
       tableBody.appendChild(row);
@@ -368,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dealerContact: String(form.dealerContact.value || "").trim(),
       sellingPriceUgx: Number(form.sellingPriceUgx.value),
       branch: branchValue,
-      date: procDateField?.value || new Date().toISOString().slice(0, 10),
+      date: toIsoFromFieldDate(procDateField?.value) || new Date().toISOString(),
       time: procTimeField?.value || new Date().toLocaleTimeString()
     };
 
@@ -419,27 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (!e.target.classList.contains("btn-delete")) return;
-    const id = e.target.dataset.id;
-    if (!requireDeleteConfirmation(id, "procurement record")) return;
-
-    try {
-      const res = await fetch(`${API_BASE}/api/procurement/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (!data.success) {
-        setMessage(data.message || "Failed to delete procurement.", "error");
-        return;
-      }
-      if (idField.value === id) resetForm();
-      setMessage("Procurement deleted successfully.", "success");
-      loadProcurement();
-    } catch (err) {
-      console.error("Error deleting procurement:", err);
-      setMessage("Error deleting procurement.", "error");
-    }
   });
 
   initProduceField();

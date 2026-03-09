@@ -30,10 +30,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const amountDueField = getFormField("amountDueUgx", "amountDue");
   const tonnageField = getFormField("tonnageKgs", "tonnage");
   const dueDateField = getFormField("dueDate");
+  const dueDateDisplayField = document.getElementById("creditDueDateDisplay");
+  const dueDateIconButton = document.getElementById("creditDueDateIconBtn");
+  const dueDatePickButton = document.getElementById("creditDueDatePickBtn");
   const dispatchDateField = getFormField("dispatchDate");
   const unitPriceHint = document.getElementById("creditUnitPriceHint");
   const unitPriceCache = new Map();
   const pendingPriceRequests = new Map();
+
+  function formatDateOnly(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return "";
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
+  function syncDueDateDisplay() {
+    if (!dueDateDisplayField || !dueDateField) return;
+    dueDateDisplayField.value = dueDateField.value ? formatDateOnly(`${dueDateField.value}T00:00:00`) : "";
+  }
+
+  if (dueDateField) dueDateField.addEventListener("change", syncDueDateDisplay);
+  if (dueDateIconButton && dueDateField) {
+    dueDateIconButton.addEventListener("click", () => {
+      if (typeof dueDateField.showPicker === "function") dueDateField.showPicker();
+      else dueDateField.click();
+    });
+  }
+  if (dueDateDisplayField && dueDateField) {
+    dueDateDisplayField.style.cursor = "pointer";
+    dueDateDisplayField.addEventListener("click", () => {
+      if (typeof dueDateField.showPicker === "function") dueDateField.showPicker();
+      else dueDateField.click();
+    });
+  }
+  if (dueDatePickButton && dueDateField) {
+    dueDatePickButton.addEventListener("click", () => {
+      if (typeof dueDateField.showPicker === "function") dueDateField.showPicker();
+      else dueDateField.click();
+    });
+  }
 
   if (sellerNameField) sellerNameField.value = userName;
   if (branchNameField) branchNameField.value = formatBranchName(assignedBranch);
@@ -81,6 +119,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (branch === "maganjo") return "Maganjo";
     if (branch === "matugga") return "Matugga";
     return String(value || "");
+  }
+
+  function formatDisplayDate(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return "-";
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   }
 
   function getProduceTypeField() {
@@ -162,7 +209,9 @@ document.addEventListener("DOMContentLoaded", () => {
     editingCreditId = "";
     if (sellerNameField) sellerNameField.value = userName;
     if (branchNameField) branchNameField.value = formatBranchName(assignedBranch);
-    if (dispatchDateField) dispatchDateField.value = new Date().toISOString().slice(0, 10);
+    if (dueDateField) dueDateField.value = "";
+    syncDueDateDisplay();
+    if (dispatchDateField) dispatchDateField.value = formatDisplayDate(new Date());
     if (amountDueField) amountDueField.readOnly = false;
     if (unitPriceHint) {
       unitPriceHint.textContent = "Amount due will auto-calculate when produce price and tonnage are available.";
@@ -214,11 +263,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <td><span class="amount-due">UGX ${amountDue}</span></td>
         <td><span class="${getPaymentStatusClass(c.paymentStatus)}">${c.paymentStatus || "Pending"}</span></td>
         <td>${c.salesAgentName ?? c.agentName ?? "-"}</td>
-        <td>${new Date(c.dueDate).toLocaleDateString()}</td>
+        <td>${formatDisplayDate(c.dueDate)}</td>
         <td>${c.produceName ?? c.itemName ?? "-"}</td>
         <td>${c.produceType ?? c.type ?? "-"}</td>
         <td>${c.tonnageKgs ?? c.tonnage ?? "-"}</td>
-        <td>${new Date(c.dispatchDate).toLocaleDateString()}</td>
+        <td>${formatDisplayDate(c.dispatchDate)}</td>
         <td>
           <button class="payBtn" data-id="${c._id}" ${Number(c.amountDueUgx ?? c.amountDue ?? 0) <= 0 ? "disabled" : ""}>Pay</button>
           <button class="updateBtn" data-id="${c._id}">Update</button>
@@ -306,11 +355,12 @@ document.addEventListener("DOMContentLoaded", () => {
       creditForm.contact.value = credit.contact;
       if (amountDueField) amountDueField.value = credit.amountDueUgx ?? credit.amountDue ?? "";
       if (dueDateField) dueDateField.value = new Date(credit.dueDate).toISOString().slice(0, 10);
+      syncDueDateDisplay();
       if (produceNameField) produceNameField.value = credit.produceName ?? credit.itemName ?? "";
       const typeField = getProduceTypeField();
       if (typeField) typeField.value = credit.produceType ?? credit.type ?? "";
       if (tonnageField) tonnageField.value = credit.tonnageKgs ?? credit.tonnage ?? "";
-      if (dispatchDateField) dispatchDateField.value = new Date(credit.dispatchDate).toISOString().slice(0, 10);
+      if (dispatchDateField) dispatchDateField.value = formatDisplayDate(credit.dispatchDate);
       if (submitButton) submitButton.textContent = "Update Credit Sale";
       await updateAmountDueAuto();
       setMessage("Credit sale loaded. Edit fields and submit to update.", "info");
@@ -392,6 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   initProduceField();
+  syncDueDateDisplay();
   tonnageField?.addEventListener("input", updateAmountDueAuto);
   produceNameField?.addEventListener("input", updateAmountDueAuto);
   produceNameField?.addEventListener("change", updateAmountDueAuto);

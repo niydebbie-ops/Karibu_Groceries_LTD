@@ -7,12 +7,15 @@ function toBranch(req, bodyBranch) {
     .toLowerCase();
 }
 
-function getPaymentStatus(amountDue, dueDate) {
+function getPaymentStatus(amountDue, dueDate, amountPaid) {
   const due = Number(amountDue || 0);
+  const paid = Number(amountPaid || 0);
   if (due <= 0) return "Paid";
+
   const now = new Date();
   const dueDt = new Date(dueDate);
   if (Number.isFinite(dueDt.getTime()) && dueDt < now) return "Overdue";
+  if (paid > 0) return "Partial";
   return "Pending";
 }
 
@@ -69,7 +72,7 @@ exports.createCredit = async (req, res) => {
       originalAmountUgx: amountDue,
       amountDueUgx: amountDue,
       amountPaidUgx: 0,
-      paymentStatus: getPaymentStatus(amountDue, req.body?.dueDate),
+      paymentStatus: getPaymentStatus(amountDue, req.body?.dueDate, 0),
       salesAgentName: String(req.body?.salesAgentName || req.user?.fullName || "").trim(),
       dueDate: new Date(req.body?.dueDate),
       produceName: String(req.body?.produceName || "").trim().toLowerCase(),
@@ -147,7 +150,7 @@ exports.updateCredit = async (req, res) => {
 
     Object.assign(existing, next);
     existing.originalAmountUgx = nextOriginal;
-    existing.paymentStatus = getPaymentStatus(existing.amountDueUgx, existing.dueDate);
+    existing.paymentStatus = getPaymentStatus(existing.amountDueUgx, existing.dueDate, existing.amountPaidUgx);
     await existing.save();
 
     return res.json({
@@ -202,12 +205,8 @@ exports.payCredit = async (req, res) => {
     existing.amountPaidUgx = Number(existing.amountPaidUgx || 0) + amount;
     existing.amountDueUgx = Number(existing.amountDueUgx || 0) - amount;
     existing.lastPaymentDate = new Date();
-    if (existing.amountDueUgx <= 0) {
-      existing.amountDueUgx = 0;
-      existing.paymentStatus = "Paid";
-    } else {
-      existing.paymentStatus = "Partial";
-    }
+    if (existing.amountDueUgx <= 0) existing.amountDueUgx = 0;
+    existing.paymentStatus = getPaymentStatus(existing.amountDueUgx, existing.dueDate, existing.amountPaidUgx);
 
     await existing.save();
     return res.json({ success: true, data: mapCredit(existing) });

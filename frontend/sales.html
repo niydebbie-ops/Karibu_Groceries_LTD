@@ -83,7 +83,7 @@
             </div>
             <div class="form-field">
               <label for="saleDate">Date (Auto)</label>
-              <input id="saleDate" type="date" name="saleDate" placeholder="Date (Auto)" readonly>
+              <input id="saleDate" type="text" name="saleDate" placeholder="DD.MM.YYYY" readonly>
             </div>
             <div class="form-field">
               <label for="saleTime">Time (Auto)</label>
@@ -145,7 +145,11 @@
             </div>
             <div class="form-field">
               <label for="creditDueDate">Due date</label>
-              <input id="creditDueDate" type="date" name="dueDate" required>
+              <div style="position:relative;width:100%;">
+                <input id="creditDueDateDisplay" type="text" placeholder="dd/mm/yyy" readonly required style="width:100%;padding-right:24px;">
+                <button id="creditDueDateIconBtn" type="button" aria-label="Open due date calendar" title="Select due date" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:16px;height:16px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0;line-height:1;cursor:pointer;z-index:2;">📅</button>
+              </div>
+              <input id="creditDueDate" type="date" name="dueDate" required hidden>
             </div>
             <div class="form-field">
               <label for="creditProduceName">Produce name</label>
@@ -201,7 +205,7 @@
   </div>
   <div id="toastContainer" class="toast-container"></div>
 
-  <script src="js/dashboard-overview.js?v=20260310"></script>
+  <script src="js/dashboard-overview.js?v=20260312"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="js/dashboard-analytics.js?v=20260336"></script>
   <script src="js/confirm-modal.js?v=20260302"></script>
@@ -332,7 +336,7 @@
   </script>
 
   <script src="js/sales.js?v=20260325"></script>
-  <script src="js/credit.js?v=20260310"></script>
+  <script src="js/credit.js?v=20260312"></script>
 </body>
 </html>
 

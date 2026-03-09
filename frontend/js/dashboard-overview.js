@@ -41,7 +41,10 @@
   function formatDate(value) {
     const date = new Date(value);
     if (!Number.isFinite(date.getTime())) return "-";
-    return date.toLocaleDateString();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   }
 
   function formatUgx(value) {

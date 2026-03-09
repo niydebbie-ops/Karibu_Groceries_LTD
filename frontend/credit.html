@@ -42,7 +42,11 @@
         </div>
         <div class="form-field">
           <label for="creditDueDate">Due date</label>
-          <input id="creditDueDate" type="date" name="dueDate" required>
+          <div style="position:relative;width:100%;">
+            <input id="creditDueDateDisplay" type="text" placeholder="dd/mm/yyy" readonly required style="width:100%;padding-right:24px;">
+            <button id="creditDueDateIconBtn" type="button" aria-label="Open due date calendar" title="Select due date" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:16px;height:16px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;padding:0;line-height:1;cursor:pointer;z-index:2;">📅</button>
+          </div>
+          <input id="creditDueDate" type="date" name="dueDate" required hidden>
         </div>
         <div class="form-field">
           <label for="creditProduceName">Produce name</label>
@@ -105,6 +109,6 @@
       else window.location.href = "sales.html";
     });
   </script>
-  <script src="js/credit.js?v=20260310"></script>
+  <script src="js/credit.js?v=20260312"></script>
 </body>
 </html>
