@@ -439,17 +439,20 @@ document.addEventListener("DOMContentLoaded", () => {
                   .map((u) => {
                     const protectedOrban = isProtectedOrban(u);
                     const isActive = u.isActive !== false;
+                    const actionContent = protectedOrban
+                      ? `<span class="protected-user-chip" title="This account is protected and cannot be changed">🔒 Protected Account</span>`
+                      : `
+                          <button class="edit-user" data-id="${u._id}">✏️ Edit</button>
+                          <button class="toggle-user" data-id="${u._id}" data-next="${isActive ? "false" : "true"}">${isActive ? "⏸️ Deactivate" : "✅ Activate"}</button>
+                          <button class="delete-user" data-id="${u._id}">Delete</button>
+                        `;
                     return `
                       <tr>
                         <td>${u.fullName || u.name}</td>
                         <td>${u.email}</td>
                         <td>${u.role}</td>
                         <td>${isActive ? "Active" : "Inactive"}</td>
-                        <td>
-                          <button class="edit-user" data-id="${u._id}" ${protectedOrban ? "disabled" : ""}>✏️ Edit</button>
-                          <button class="toggle-user" data-id="${u._id}" data-next="${isActive ? "false" : "true"}" ${protectedOrban ? "disabled" : ""}>${isActive ? "⏸️ Deactivate" : "✅ Activate"}</button>
-                          <button class="delete-user" data-id="${u._id}" ${protectedOrban ? "disabled" : ""}>Delete</button>
-                        </td>
+                        <td>${actionContent}</td>
                       </tr>
                     `;
                   })

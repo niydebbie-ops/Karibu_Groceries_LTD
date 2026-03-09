@@ -637,6 +637,20 @@ table button,
   white-space: nowrap;
 }
 
+.protected-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #c8d8cc;
+  background: #eef7f0;
+  color: #1f5a2f;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .card h2,
 .card h3,
 .content h2,
