@@ -560,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <input id="branchName" placeholder="Branch name" required />
                 <input id="branchLocation" placeholder="Branch location" required />
                 <div class="branch-form-actions">
-                  <button type="submit" id="branchSaveBtn">Save Branch</button>
+                  <button type="submit" id="branchSaveBtn" class="branch-primary-btn">Save Branch</button>
                 </div>
               </form>
             </article>
@@ -578,7 +578,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   <option value="">Select branch</option>
                   ${branches.filter((b) => b.isActive !== false).map((b) => `<option value="${b._id}">${formatBranchName(b.name)}</option>`).join("")}
                 </select>
-                <button type="submit">Assign User</button>
+                <div class="branch-form-actions">
+                  <button type="submit" class="branch-primary-btn">Assign User</button>
+                </div>
               </form>
             </article>
           </div>

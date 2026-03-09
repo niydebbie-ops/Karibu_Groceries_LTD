@@ -899,6 +899,21 @@ table button,
   flex-wrap: wrap;
 }
 
+.branch-form-actions .branch-primary-btn {
+  width: 100%;
+  border-radius: var(--kgl-radius-md);
+  padding: 10px;
+  background: linear-gradient(180deg, #2f7f36 0%, #2a7231 48%, #25662b 100%) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.branch-form-actions .branch-primary-btn:hover {
+  background: linear-gradient(180deg, #2a7231 0%, #25662b 50%, #205925 100%) !important;
+}
+
 .btn-secondary {
   background: #fff !important;
   border: 1px solid #cdded4 !important;
