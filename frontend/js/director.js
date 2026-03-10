@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <option value="SalesAgent">SalesAgent</option>
               <option value="Director">Director</option>
             </select>
-            <button type="submit">Save User ✅</button>
+            <button type="submit">Save User</button>
           </form>
           <div class="table-scroll">
             <table class="table-modern" id="usersTable">
