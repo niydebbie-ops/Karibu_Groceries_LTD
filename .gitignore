@@ -42,3 +42,6 @@ out/
 
 # Optional Render local config
 .render/
+
+# Local backups
+mongo-backup/
